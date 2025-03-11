@@ -1,0 +1,58 @@
+@page "/"
+@namespace TestWebApp.Pages
+
+<PageTitle>Tic Tac Toe</PageTitle>
+
+<div class="container">
+    <div id="header">
+        <h1 id="title">Tic Tac Toe</h1>
+        @* <h3 id="author">App by Ryan Langdon</h3> *@
+    </div>
+
+    <button id="restartButton" @onclick="RestartButton">Restart</button>
+
+    <h2 id="gameState">
+        @if (tie)
+        {
+            <span>The game is a tie!</span>
+        }
+        else if (winner != '\0')
+        {
+            <span><span class="@winner">@winner</span> has won!</span>
+        }
+        else
+        {
+            <span>It is <span class="@currPlayer">@currPlayer</span>'s turn:</span>
+        }
+    </h2>
+    
+    <div id="gameBoard">
+        @for (var i = 0; i < 9; i++)
+        {
+            int index = i;
+            <div class="cell @GetCellClass(index)" id="@index" @onclick="() => HandleClick(index)">
+                @if (board[i] != '\0')
+                {
+                    @board[i]
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code
+{
+    // Adds tags to a cells class to control visual logic
+    string GetCellClass(int index)
+    {
+        List<string> classes = new();
+
+        if (board[index] != '\0') classes.Add("occupied");
+        if (board[index] == 'O') classes.Add("O");
+        if (board[index] == 'X') classes.Add("X");
+        if (gameOver) classes.Add("no-hover");
+        if (winningCells?.Contains(index) == true) classes.Add("winning");
+        
+        return string.Join(" ", classes);
+    }
+}
