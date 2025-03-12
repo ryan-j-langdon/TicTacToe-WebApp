@@ -1,5 +1,37 @@
+:root {
+    --x-color: red;
+    --o-color: blue;
+    --winning-color: var(--primary-color);
+    
+    --primary-color: #bb86fc;
+    --secondary-color: #825daf;
+    
+    --text-color: #e1e1e1;
+    --subtle-text-color: #a0a0a0;
+    --button-text-color: black;
+    
+    --gameboard-color: #e1e1e1;
+    
+    --background-color: #272727;
+    --top-header-color: #2d2d2d;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(fonts/Roboto-VariableFont_wdth,wgth.ttf)
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    src: url(fonts/NotoSans-VariableFont_wdth,wght.ttf)
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+    /* font-family: 'Helvetica Neue'; */
+    /* font-family: 'Roboto'; */
+    font-family: 'Noto Sans', 'Roboto';
+    background-color: #1e1e1e;
 }
 
 h1:focus {

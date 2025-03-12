@@ -14,20 +14,13 @@
 }
 
 #title {
-    font-size: 54px;
-    text-transform: uppercase;
-}
-
-#author {
-    /* color: purple; */
-    font-size: 20px;
-}
-
-#restartButton {
-    margin-bottom: 20px;
+    color: var(--text-color);
+    font-size: 70px;
+    /* text-transform: uppercase; */
 }
 
 #gameState {
+    color: var(--text-color);
     /* animation: flip 1s ease-in-out; */
     /* transform-style: preserve-3d; */
     margin-bottom: 20px;
@@ -35,13 +28,15 @@
 }
 
 #restartButton {
-    padding: 5px 10px;
-    font-size: 20px;
-    color: white;
-    background-color: rgb(197, 31, 178);
-    border-color: blue;
+    padding: 2px 15px;
+    font-size: 30px;
+    color: var(--button-text-color);
+    background-color: var(--primary-color);
+    /* border-color: var(--secondary-color); */
+    border: none;
     border-radius: 10px;
     transition: 200ms transform;
+    margin-bottom: 20px;
 }
 
 #restartButton:hover {
@@ -55,24 +50,26 @@
 }
 
 .O {
-    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    color: var(--o-color);
 }
 
 .X {
-    color: red;
+    font-family: Helvetica, Arial, sans-serif;
+    color: var(--x-color);
 }
 
 .cell {
     user-select: none;
+    font-size: 120px;
     height: 100px;
     width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 120px;
     border-right: 2px solid;
     border-bottom: 2px solid;
-    border-color: black;
+    border-color: var(--gameboard-color);
 }
 
 .cell:nth-child(3n) {
@@ -88,7 +85,6 @@
 }
 
 .cell.occupied {
-    /* background-color: lightgray; */
     pointer-events: none;
 }
 
@@ -97,7 +93,10 @@
 }
 
 .cell.winning {
-    background-color: rgba(19, 216, 19, 0.938);
+    /* background-color: rgba(19, 216, 19, 0.938); */
+    /* box-shadow: 0 0 10px 4px rgba(162, 0, 255, 0.8); */
+    /* background-color: rgb(118, 255, 125); */
+    background-color: var(--winning-color);
 }
 
 @keyframes flip {
