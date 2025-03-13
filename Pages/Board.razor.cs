@@ -1,4 +1,4 @@
-namespace TestWebApp.Pages;
+namespace TicTacToe.Pages;
 
 public partial class Board
 {
