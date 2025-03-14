@@ -1,22 +1,7 @@
 .container {
-    /* background-color: rgba(255, 0, 0, 0.121); */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-#header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#title {
-    color: var(--text-color);
-    font-size: 70px;
-    /* text-transform: uppercase; */
 }
 
 #gameState {
@@ -27,26 +12,15 @@
     /* transform: rotateY(180deg); */
 }
 
-#restartButton {
-    padding: 2px 15px;
-    font-size: 30px;
-    color: var(--button-text-color);
-    background-color: var(--primary-color);
-    /* border-color: var(--secondary-color); */
-    border: none;
-    border-radius: 10px;
-    transition: 200ms transform;
-    margin-bottom: 20px;
-}
-
-#restartButton:hover {
-    cursor: pointer;
-    transform: translateY(-2px);
-}
-
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: repeat(3, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    aspect-ratio: 1;
+    gap: 0;
+    user-select: none;
 }
 
 .O {
@@ -60,10 +34,7 @@
 }
 
 .cell {
-    user-select: none;
     font-size: 120px;
-    height: 100px;
-    width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,9 +64,6 @@
 }
 
 .cell.winning {
-    /* background-color: rgba(19, 216, 19, 0.938); */
-    /* box-shadow: 0 0 10px 4px rgba(162, 0, 255, 0.8); */
-    /* background-color: rgb(118, 255, 125); */
     background-color: var(--winning-color);
 }
 

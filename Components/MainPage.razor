@@ -1,0 +1,45 @@
+﻿@page "/"
+@namespace TicTacToe.Components
+
+<PageTitle>Tic Tac Toe</PageTitle>
+
+<div class="container">
+    <div id="buttons">
+        <RestartButton OnRestart="RestartGame"/>
+        <OptionsButton OnOptions="OptionsMenu"/>    
+    </div>
+    <div id="spacer"></div>
+    <GameBoard @ref="gameBoard"/>
+</div>
+
+@code
+{
+    private GameBoard? gameBoard;
+    
+    void RestartGame()
+    {
+        Console.WriteLine("Restart clicked!");
+        if (gameBoard == null)
+        {
+            Console.WriteLine("gameBoard is null!");
+        }
+        else
+        {
+            gameBoard.Restart();
+        }
+    }
+    
+    void OptionsMenu()
+    {
+        Console.WriteLine("Options button clicked!");
+        if (gameBoard == null)
+        {
+            Console.WriteLine("gameBoard is null!");
+        }
+        else
+        {
+            gameBoard.SetGamemode(GameBoard.Gamemode.AI_Opponent);
+            Opponent.currentDifficulty = Opponent.Difficulty.Easy;
+        }
+    }
+}

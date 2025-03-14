@@ -1,12 +1,7 @@
-@page "/"
-@namespace TicTacToe.Pages
-
-<PageTitle>Tic Tac Toe</PageTitle>
+@namespace TicTacToe.Components
 
 <div class="container">
-
-    <button id="restartButton" @onclick="RestartButton">Restart</button>
-
+    
     <h2 id="gameState">
         @if (tie)
         {
@@ -18,7 +13,7 @@
         }
         else
         {
-            <span>It is <span class="@currPlayer">@currPlayer</span>'s turn:</span>
+            <span>It is <span class="@currentPlayer">@currentPlayer</span>'s turn:</span>
         }
     </h2>
     

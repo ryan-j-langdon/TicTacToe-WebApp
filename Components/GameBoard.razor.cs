@@ -1,13 +1,13 @@
-namespace TicTacToe.Pages;
+namespace TicTacToe.Components;
 
-public partial class Board
+public partial class GameBoard
 {
     // Represents the tic tac toe board.
     // Indexes 0-2 are the first row, 3-5 second row, 6-8 third row
     // '\0' is an empty space and 'X' and 'Y' are occupied spaces
     char[] board = new char[9];
     // The current player's turn, X or Y. X plays first
-    public char currPlayer { get; private set; } = 'X';
+    public char currentPlayer { get; private set; } = 'X';
     // Is the game over?
     bool gameOver = false;
     // Who is the winner? '\0' if n/a
@@ -16,7 +16,21 @@ public partial class Board
     bool tie = false;
     // Which cells caused the win?
     int[]? winningCells = null;
-
+    
+    // Whether the mode is against another person or against AI
+    public enum Gamemode
+    {
+        Multiplayer,
+        AI_Opponent
+    }
+    
+    public Gamemode currentGamemode { private get; set; }
+    
+    public void SetGamemode(Gamemode gm)
+    {
+        currentGamemode = gm;
+    }
+    
     // Handles when a cell is clicked on
     void HandleClick(int cell_index)
     {
@@ -33,7 +47,7 @@ public partial class Board
         // Can't play on occupied cells
         if (board[cell_index] != '\0') return;
 
-        board[cell_index] = currPlayer;
+        board[cell_index] = currentPlayer;
         
         if (CheckWinner())
         {
@@ -43,41 +57,67 @@ public partial class Board
         {
             gameOver = true;
             tie = true;
-            // Console.WriteLine("Game ended in a draw!");
         }
         else
         {
             SwitchTurns();
         }
-        // StateHasChanged();
+
+        // If playing against AI, they take their turn
+        if (!gameOver && currentGamemode == Gamemode.AI_Opponent) 
+        {
+            Task.Run(async () => await OpponentTurn());
+        }
+    }
+    
+    // Opponent AI takes their turn
+    async Task OpponentTurn()
+    {
+        int move = Opponent.PlayMove(board);
+        await Task.Delay(500);
+        board[move] = currentPlayer;
+        if (CheckWinner())
+        {
+            gameOver = true;
+        }
+        else if (CheckTie())
+        {
+            gameOver = true;
+            tie = true;
+        }
+        else
+        {
+            SwitchTurns();
+        }
+        StateHasChanged();
     }
 
     // Switches the active player
     void SwitchTurns()
     {
-        if (currPlayer == 'X')
+        if (currentPlayer == 'X')
         {
-            currPlayer = 'O';
+            currentPlayer = 'O';
         }
         else
         {
-            currPlayer = 'X';
+            currentPlayer = 'X';
         }
-        // Console.WriteLine($"It is now {currPlayer}'s turn.");
-        // StateHasChanged();
+        // Console.WriteLine($"It is now {currentPlayer}'s turn.");
+        StateHasChanged();
     }
 
     // Resets the state of the game
-    public void RestartButton()
+    public void Restart()
     {
         // Console.WriteLine($"Restart clicked!");
         Array.Clear(board);
-        currPlayer = 'X';
+        currentPlayer = 'X';
         winner = '\0';
         gameOver = false;
         winningCells = null;
         tie = false;
-        // StateHasChanged();
+        StateHasChanged();
     }
 
     // Returns true if there's a winner, else false.

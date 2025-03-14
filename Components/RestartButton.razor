@@ -1,0 +1,9 @@
+﻿@namespace TicTacToe.Components
+
+<button id="restartButton" @onclick="OnRestart">Restart</button>
+
+@code
+{
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnRestart { get; set; }
+}
