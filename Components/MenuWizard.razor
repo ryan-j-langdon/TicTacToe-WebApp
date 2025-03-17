@@ -1,0 +1,60 @@
+﻿@page "/"
+@namespace TicTacToe.Components
+@using TicTacToe.Logic
+@inject AppState app
+
+@if (app.currentView == AppState.View.ModeSelect)
+{
+    <div class="container">
+        <button id="multiplayerButton" @onclick="MultiplayerButton">Multiplayer</button>
+        <button id="versusAIButton" @onclick="VersusAIButton">Versus AI</button>
+    </div>
+}
+
+@if (app.currentView == AppState.View.DifficultySelect)
+{
+    <div class="container">
+        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</button>
+        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
+        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button>
+        <button id="backButton" @onclick="() => app.currentView = AppState.View.ModeSelect">Back</button>
+    </div>
+}
+
+@if (app.currentView == AppState.View.GameBoard)
+{
+    <MainPage />
+}
+
+@code
+{
+    // Rerender if the view is changed from elsewhere
+    protected override void OnInitialized()
+    {
+        app.OnViewChanged += StateHasChanged;
+    }
+    
+    private void MultiplayerButton()
+    {
+        app.currentView = AppState.View.GameBoard;
+        SetMode(AppState.Gamemode.Multiplayer);
+    }
+
+    private void VersusAIButton()
+    {
+        app.currentView = AppState.View.DifficultySelect;
+        SetMode(AppState.Gamemode.AI_Opponent);
+    }
+
+    private void SetMode(AppState.Gamemode mode)
+    {
+        app.currentGamemode = mode;
+    }
+
+    private void SetDifficulty(Opponent.Difficulty diff)
+    {
+        Opponent.currentDifficulty = diff;
+        app.currentView = AppState.View.GameBoard;
+    }
+
+}

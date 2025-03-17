@@ -1,17 +1,17 @@
-namespace TicTacToe.Components;
+namespace TicTacToe.Logic;
 
-
+// Opponent's logic on different difficulties
 public static partial class Opponent
 {
+    // The difficulty level of the opponent AI
     public enum Difficulty
     {
         Easy,
         Medium,
         Impossible
     }
-    
-    // The current difficulty level of the opponent AI
-    public static Difficulty currentDifficulty { get; set;}
+
+    public static Difficulty currentDifficulty { get; set; }
     
     // Event handler needs to set difficulty with a function call
     public static void SetDifficulty(Difficulty diff)

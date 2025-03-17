@@ -1,4 +1,5 @@
 namespace TicTacToe.Components;
+using TicTacToe.Logic;
 
 public partial class GameBoard
 {
@@ -17,19 +18,19 @@ public partial class GameBoard
     // Which cells caused the win?
     int[]? winningCells = null;
     
-    // Whether the mode is against another person or against AI
-    public enum Gamemode
-    {
-        Multiplayer,
-        AI_Opponent
-    }
+    // // Whether the mode is against another person or against AI
+    // public enum Gamemode
+    // {
+    //     Multiplayer,
+    //     AI_Opponent
+    // }
     
-    public Gamemode currentGamemode { private get; set; }
+    // public static Gamemode currentGamemode { private get; set; }
     
-    public void SetGamemode(Gamemode gm)
-    {
-        currentGamemode = gm;
-    }
+    // public void SetGamemode(Gamemode gm)
+    // {
+    //     currentGamemode = gm;
+    // }
     
     // Handles when a cell is clicked on
     void HandleClick(int cell_index)
@@ -64,7 +65,7 @@ public partial class GameBoard
         }
 
         // If playing against AI, they take their turn
-        if (!gameOver && currentGamemode == Gamemode.AI_Opponent) 
+        if (!gameOver && app.currentGamemode == AppState.Gamemode.AI_Opponent) 
         {
             Task.Run(async () => await OpponentTurn());
         }

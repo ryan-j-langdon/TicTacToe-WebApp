@@ -1,5 +1,6 @@
-﻿@page "/"
-@namespace TicTacToe.Components
+﻿@namespace TicTacToe.Components
+@using TicTacToe.Logic
+@inject AppState app
 
 <PageTitle>Tic Tac Toe</PageTitle>
 
@@ -38,8 +39,8 @@
         }
         else
         {
-            gameBoard.SetGamemode(GameBoard.Gamemode.AI_Opponent);
-            Opponent.currentDifficulty = Opponent.Difficulty.Easy;
+            app.currentView = AppState.View.ModeSelect;
+            InvokeAsync(StateHasChanged);
         }
     }
 }
