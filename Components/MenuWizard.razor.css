@@ -1,4 +1,10 @@
-﻿.container {
+﻿/* TODO remove*/
+#comingSoon {
+    color: var(--text-color);
+    text-align: center;
+}
+
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,6 +21,11 @@ button {
     transition: 200ms transform;
     margin-bottom: 20px;
     user-select: none;
+}
+
+button:hover {
+    cursor: pointer;
+    transform: translateY(-2px);
 }
 
 #backButton {

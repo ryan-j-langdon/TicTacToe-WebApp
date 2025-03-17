@@ -15,8 +15,12 @@
 {
     <div class="container">
         <button @onclick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</button>
-        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
-        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button>
+        
+        <!-- TODO not implemented -->
+        <h3 id="comingSoon">More difficulties <br> coming soon!</h3>
+        @* <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
+        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button> *@
+        
         <button id="backButton" @onclick="() => app.currentView = AppState.View.ModeSelect">Back</button>
     </div>
 }
