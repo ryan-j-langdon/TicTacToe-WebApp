@@ -6,10 +6,9 @@
 
 <div class="container">
     <div id="buttons">
-        <RestartButton OnRestart="RestartGame"/>
-        <OptionsButton OnOptions="OptionsMenu"/>    
+        <RestartButton OnClick="RestartGame" />
+        <MainMenuButton OnClick="OptionsMenu"/>    
     </div>
-    <div id="spacer"></div>
     <GameBoard @ref="gameBoard"/>
 </div>
 

@@ -4,6 +4,15 @@
     text-align: center;
 }
 
+.heading {
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--text-color);
+    text-align: center;
+    white-space: nowrap;
+    margin-bottom: 20px;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -29,5 +38,6 @@ button:hover {
 }
 
 #backButton {
+    margin-top: 20px;
     background-color: grey;
 }

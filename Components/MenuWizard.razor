@@ -5,6 +5,7 @@
 
 @if (app.currentView == AppState.View.ModeSelect)
 {
+    <h2 class="heading">Select Game Mode</h2>
     <div class="container">
         <button id="multiplayerButton" @onclick="MultiplayerButton">Multiplayer</button>
         <button id="versusAIButton" @onclick="VersusAIButton">Versus AI</button>
@@ -13,11 +14,12 @@
 
 @if (app.currentView == AppState.View.DifficultySelect)
 {
+    <h2 class="heading">Select Difficulty</h2>
     <div class="container">
         <button @onclick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</button>
         
         <!-- TODO not implemented -->
-        <h3 id="comingSoon">More difficulties <br> coming soon!</h3>
+        <h3 id="comingSoon">(More difficulties <br> coming soon!)</h3>
         @* <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
         <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button> *@
         

@@ -2,35 +2,32 @@
 @using TicTacToe.Logic
 @inject AppState app
 
-<div class="container">
-    
-    <h2 id="gameState">
-        @if (tie)
-        {
-            <span>The game is a tie!</span>
-        }
-        else if (winner != '\0')
-        {
-            <span><span class="@winner">@winner</span> has won!</span>
-        }
-        else
-        {
-            <span>It is <span class="@currentPlayer">@currentPlayer</span>'s turn:</span>
-        }
-    </h2>
-    
-    <div id="gameBoard">
-        @for (var i = 0; i < 9; i++)
-        {
-            int index = i;
-            <div class="cell @GetCellClass(index)" id="@index" @onclick="() => HandleClick(index)">
-                @if (board[i] != '\0')
-                {
-                    @board[i]
-                }
-            </div>
-        }
-    </div>
+<h2 id="gameState">
+    @if (tie)
+    {
+        <span>The game is a tie!</span>
+    }
+    else if (winner != '\0')
+    {
+        <span><span class="@winner">@winner</span> has won!</span>
+    }
+    else
+    {
+        <span>It is <span class="@currentPlayer">@currentPlayer</span>'s turn:</span>
+    }
+</h2>
+
+<div id="gameBoard">
+    @for (var i = 0; i < 9; i++)
+    {
+        int index = i;
+        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => HandleClick(index)">
+            @if (board[i] != '\0')
+            {
+                @board[i]
+            }
+        </div>
+    }
 </div>
 
 @code
@@ -43,7 +40,7 @@
         if (board[index] != '\0') classes.Add("occupied");
         if (board[index] == 'O') classes.Add("O");
         if (board[index] == 'X') classes.Add("X");
-        if (gameOver) classes.Add("no-hover");
+        if (gameOver || !interactable) classes.Add("no-hover");
         if (winningCells?.Contains(index) == true) classes.Add("winning");
         
         return string.Join(" ", classes);

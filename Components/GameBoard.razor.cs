@@ -9,6 +9,8 @@ public partial class GameBoard
     char[] board = new char[9];
     // The current player's turn, X or Y. X plays first
     public char currentPlayer { get; private set; } = 'X';
+    // Should the player be able to interact with the cell?
+    bool interactable = true;
     // Is the game over?
     bool gameOver = false;
     // Who is the winner? '\0' if n/a
@@ -17,20 +19,6 @@ public partial class GameBoard
     bool tie = false;
     // Which cells caused the win?
     int[]? winningCells = null;
-    
-    // // Whether the mode is against another person or against AI
-    // public enum Gamemode
-    // {
-    //     Multiplayer,
-    //     AI_Opponent
-    // }
-    
-    // public static Gamemode currentGamemode { private get; set; }
-    
-    // public void SetGamemode(Gamemode gm)
-    // {
-    //     currentGamemode = gm;
-    // }
     
     // Handles when a cell is clicked on
     void HandleClick(int cell_index)
@@ -42,8 +30,7 @@ public partial class GameBoard
             return;
         }
 
-        // Can't click on cells once the game is over
-        if (gameOver) return;
+        if (gameOver || !interactable) return;
 
         // Can't play on occupied cells
         if (board[cell_index] != '\0') return;
@@ -75,6 +62,8 @@ public partial class GameBoard
     async Task OpponentTurn()
     {
         int move = Opponent.PlayMove(board);
+        interactable = false;
+        StateHasChanged();
         await Task.Delay(500);
         board[move] = currentPlayer;
         if (CheckWinner())
@@ -88,6 +77,7 @@ public partial class GameBoard
         }
         else
         {
+            interactable = true;
             SwitchTurns();
         }
         StateHasChanged();
@@ -118,11 +108,12 @@ public partial class GameBoard
         gameOver = false;
         winningCells = null;
         tie = false;
+        interactable = true;
         StateHasChanged();
     }
 
     // Returns true if there's a winner, else false.
-    // Sets `winner` and winningCells to indicate the winner.
+    // Sets `winner` and `winningCells` to indicate the winner.
     bool CheckWinner()
     {
         // Check rows

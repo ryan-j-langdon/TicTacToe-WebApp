@@ -5,22 +5,24 @@
 }
 
 #gameState {
+    font-size: max(30px, min(5vh, 5vw));
     color: var(--text-color);
+    margin-bottom: 20px;
     /* animation: flip 1s ease-in-out; */
     /* transform-style: preserve-3d; */
-    margin-bottom: 20px;
     /* transform: rotateY(180deg); */
 }
 
 #gameBoard {
     display: grid;
-    /* grid-template-columns: repeat(3, minmax(100px, 1fr));
-    grid-template-rows: repeat(3, minmax(100px, 1fr)); */
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     aspect-ratio: 1;
-    gap: 0;
     user-select: none;
+    
+    width: 100%;
+    max-width: 60vmin;
+    min-width: 300px;
 }
 
 .O {
@@ -34,13 +36,15 @@
 }
 
 .cell {
-    font-size: 120px;
+    font-size: max(120px, 22vmin);
     display: flex;
     align-items: center;
     justify-content: center;
     border-right: 2px solid;
     border-bottom: 2px solid;
     border-color: var(--gameboard-color);
+    min-width: 0;
+    min-height: 0;
 }
 
 .cell:nth-child(3n) {
@@ -51,15 +55,17 @@
     border-bottom: none;
 }
 
-.cell:hover {
-    background-color: #b752d63f;
+@media (pointer: fine) {
+    .cell:hover {
+        background-color: var(--secondary-color);
+    }
 }
 
 .cell.occupied {
     pointer-events: none;
 }
 
-.cell.no-hover {
+.cell.no-hover {    
     pointer-events: none;
 }
 
@@ -67,11 +73,12 @@
     background-color: var(--winning-color);
 }
 
-@keyframes flip {
+/* TODO unused animation */
+/* @keyframes flip {
     0% {
         
     }
     100% {
         transform: rotateY(180deg);
     }
-}
+} */
