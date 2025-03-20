@@ -263,7 +263,7 @@ public partial class Opponent
         WinResult result = rules.CheckWinner(gameState);
         if (result.hasWinner)
         {
-            if (result.winner == 'O')
+            if (result.winnerChar == 'O')
             {
                 // Console.WriteLine($"Found winning board with depth {depth} and weight {10 - depth}.");
                 return new Choice(lastMove, 10 - depth, depth);

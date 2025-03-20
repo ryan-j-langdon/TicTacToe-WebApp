@@ -3,13 +3,13 @@ namespace TicTacToe.Logic;
 public class WinResult
 {
     public bool hasWinner = false;
-    public char winner = '\0';
+    public char winnerChar = '\0';
     public int[]? winningCells = [];
     
-    public WinResult(bool hasWinner, char winner = '\0', int[]? winningCells = null)
+    public WinResult(bool hasWinner, char winnerChar = '\0', int[]? winningCells = null)
     {
         this.hasWinner = hasWinner;
-        this.winner = winner;
+        this.winnerChar = winnerChar;
         this.winningCells = winningCells;
     }
 }
@@ -76,11 +76,7 @@ public class GameState
     public void PlayMove(int cell_index)
     {
         // Console.WriteLine($"Cell {cell_index} clicked.");
-        if (cell_index >= board.Length || cell_index < 0)
-        {
-            Console.WriteLine("HandleClick called with out of bounds value!");
-            return;
-        }
+        if (cell_index >= board.Length || cell_index < 0) return;
 
         if (gameOver || !interactable) return;
 
@@ -89,10 +85,11 @@ public class GameState
 
         board[cell_index] = currentPlayer;
         WinResult result = rules.CheckWinner(board);
+        Console.WriteLine($"hasWinner = {result.hasWinner}");
         if (result.hasWinner)
         {
             gameOver = true;
-            winner = result.winner;
+            winner = result.winnerChar;
             winningCells = result.winningCells;
         }
         else if (rules.CheckBoardFilled(board))
@@ -104,11 +101,11 @@ public class GameState
         {
             SwitchTurns();
         }
-
+        OnChange();
         // If playing against AI, they take their turn
         if (!gameOver && currentGamemode == Gamemode.AI_Opponent)
         {
-            Task.Run(async () => await OpponentTurn());
+            Task.Run(OpponentTurn);
         }
     }
 
@@ -124,6 +121,8 @@ public class GameState
         if (result.hasWinner)
         {
             gameOver = true;
+            winner = result.winnerChar;
+            winningCells = result.winningCells;
         }
         else if (rules.CheckBoardFilled(board))
         {
