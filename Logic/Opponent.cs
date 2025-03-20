@@ -1,8 +1,15 @@
 namespace TicTacToe.Logic;
 
 // Opponent's logic on different difficulties
-public static partial class Opponent
+public partial class Opponent
 {
+    private readonly GameRules rules;
+    
+    public Opponent(GameRules rules)
+    {
+        this.rules = rules;
+    }
+    
     // The difficulty level of the opponent AI
     public enum Difficulty
     {
@@ -11,16 +18,16 @@ public static partial class Opponent
         Impossible
     }
 
-    public static Difficulty currentDifficulty { get; set; }
+    public Difficulty currentDifficulty { get; set; }
     
     // Event handler needs to set difficulty with a function call
-    public static void SetDifficulty(Difficulty diff)
+    public void SetDifficulty(Difficulty diff)
     {
         currentDifficulty = diff;
     }
 
     // Returns the index the opponent wants to play on
-    public static int PlayMove(char[] board)
+    public int PlayMove(char[] board)
     {
         switch (currentDifficulty)
         {
@@ -36,7 +43,7 @@ public static partial class Opponent
     }
     
     // Just selects a random tile to play on
-    private static int PlayEasyMove(char[] board)
+    private int PlayEasyMove(char[] board)
     {
         List<int> possibleMoves = new List<int>();
         Random random = new Random();
@@ -50,8 +57,8 @@ public static partial class Opponent
         return possibleMoves[random.Next(possibleMoves.Count)];
     }
     
-    // TODO Always blocks wins and claims victory when possible, but otherwise random
-    private static int PlayMediumMove(char[] board)
+    // Always blocks wins and claims victory when possible, but otherwise random
+    private int PlayMediumMove(char[] board)
     {
         int? winningMove = null;
         int? blockingMove = null;
@@ -238,10 +245,107 @@ public static partial class Opponent
     }
     
     // TODO Plays optimally, impossible to beat
-    private static int PlayImpossibleMove(char[] board)
+    private int PlayImpossibleMove(char[] board)
     {
-        return 0;
+        // Console.WriteLine("Playing impossible move!");
+        Choice bestMove = Minimax(board, true, 'O', 0, -1);
+        return bestMove.move;
     }
+    
+    // Minimax algorithm tries all possible gamestates and picks the optimal move
+    // Wins are weighted positive, with earlier wins being weighted higher
+    // Loses are weighted negative, with earlier loses being rated lower
+    // Ties are weighted at 0
+    private Choice Minimax(char[] gameState, bool maximize, char currentPlayer, int depth, int lastMove)
+    {
+        // Base cases is when the game is over
+        
+        WinResult result = rules.CheckWinner(gameState);
+        if (result.hasWinner)
+        {
+            if (result.winner == 'O')
+            {
+                // Console.WriteLine($"Found winning board with depth {depth} and weight {10 - depth}.");
+                return new Choice(lastMove, 10 - depth, depth);
+            }
+            else
+            {
+                // Console.WriteLine($"Found losing board with depth {depth} and weight {-10 + depth}.");
+                return new Choice(lastMove, -10 + depth, depth);
+            } 
+        }
+        
+        if (rules.CheckBoardFilled(gameState))
+        {
+            return new Choice(lastMove, 0, depth);
+        }
+        
+        // Recursive case when there are moves to analyze
+        
+        int maxWeight = -100;
+        int maxPlay = -1;
+        int minWeight = 100;
+        int minPlay = -1;
+        
+        List<int> legalMoves = GetLegalMoves(gameState);
+        foreach (int move in legalMoves)
+        {
+            char[] newGameState = (char[])gameState.Clone();
+            newGameState[move] = currentPlayer;
+            Choice choice = Minimax(newGameState, !maximize, OtherPlayer(currentPlayer), depth+1, move);
+            if (choice.weight > maxWeight)
+            {
+                maxWeight = choice.weight;
+                maxPlay = move;
+            }
+            if (choice.weight < minWeight)
+            {
+                minWeight = choice.weight;
+                minPlay = move;
+            }
+        }
+        
+        if (maximize)
+        {
+            return new Choice(maxPlay, maxWeight, depth);
+        }
+        else {
+            return new Choice(minPlay, minWeight, depth);
+        }
+    }
+    
+    // Returns a list of legal moves for a given game board
+    private List<int> GetLegalMoves(char[] board)
+    {
+        List<int> validMoves = new List<int>();
+        for (int i = 0; i < board.Length; i++)
+        {
+            if (board[i] == '\0')
+            {
+                validMoves.Add(i);
+            }
+        }
+        return validMoves;
+    }
+    
+    // Returns the character of the other player
+    private char OtherPlayer(char currentPlayer)
+    {
+        if (currentPlayer == 'X')
+        {
+            return 'O';
+        }
+        else
+        {
+            return 'X';
+        }
+    }
+}
 
-
+// Represents a choice of move
+public class Choice(int move, int weight, int depth)
+{
+    public int move = move;
+    public int weight = weight;
+    public int depth = depth;
 }

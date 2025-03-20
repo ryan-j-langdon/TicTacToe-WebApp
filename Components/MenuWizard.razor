@@ -2,6 +2,8 @@
 @namespace TicTacToe.Components
 @using TicTacToe.Logic
 @inject AppState app
+@inject GameState state
+@inject Opponent opponent
 
 @if (app.currentView == AppState.View.ModeSelect)
 {
@@ -18,9 +20,9 @@
     <div class="container">
         <button @onclick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</button>
         <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
+        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button>
         <!-- TODO not implemented -->
-        <h3 id="comingSoon">(More difficulties <br> coming soon!)</h3>
-        @* <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button> *@
+        @* <h3 id="comingSoon">(More difficulties <br> coming soon!)</h3> *@
         
         <button id="backButton" @onclick="() => app.currentView = AppState.View.ModeSelect">Back</button>
     </div>
@@ -42,23 +44,23 @@
     private void MultiplayerButton()
     {
         app.currentView = AppState.View.GameBoard;
-        SetMode(AppState.Gamemode.Multiplayer);
+        SetMode(GameState.Gamemode.Multiplayer);
     }
 
     private void VersusAIButton()
     {
         app.currentView = AppState.View.DifficultySelect;
-        SetMode(AppState.Gamemode.AI_Opponent);
+        SetMode(GameState.Gamemode.AI_Opponent);
     }
 
-    private void SetMode(AppState.Gamemode mode)
+    private void SetMode(GameState.Gamemode mode)
     {
-        app.currentGamemode = mode;
+        state.currentGamemode = mode;
     }
 
     private void SetDifficulty(Opponent.Difficulty diff)
     {
-        Opponent.currentDifficulty = diff;
+        opponent.currentDifficulty = diff;
         app.currentView = AppState.View.GameBoard;
     }
 

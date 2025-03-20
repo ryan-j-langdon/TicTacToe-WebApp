@@ -1,19 +1,20 @@
 @namespace TicTacToe.Components
 @using TicTacToe.Logic
 @inject AppState app
+@inject GameState state
 
 <h2 id="gameState">
-    @if (tie)
+    @if (state.tie)
     {
         <span>The game is a tie!</span>
     }
-    else if (winner != '\0')
+    else if (state.winner != '\0')
     {
-        <span><span class="@winner">@winner</span> has won!</span>
+        <span><span class="@state.winner">@state.winner</span> has won!</span>
     }
     else
     {
-        <span>It is <span class="@currentPlayer">@currentPlayer</span>'s turn:</span>
+        <span>It is <span class="@state.currentPlayer">@state.currentPlayer</span>'s turn:</span>
     }
 </h2>
 
@@ -21,10 +22,10 @@
     @for (var i = 0; i < 9; i++)
     {
         int index = i;
-        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => HandleClick(index)">
-            @if (board[i] != '\0')
+        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => state.PlayMove(index)">
+            @if (state.board[i] != '\0')
             {
-                @board[i]
+                @state.board[i]
             }
         </div>
     }
@@ -32,16 +33,22 @@
 
 @code
 {
+    // Rerender if the game state is changed from elsewhere
+    protected override void OnInitialized()
+    {
+        state.OnBoardChanged += StateHasChanged;
+    }
+    
     // Adds tags to a cells class to control visual logic
     string GetCellClass(int index)
     {
         List<string> classes = new();
 
-        if (board[index] != '\0') classes.Add("occupied");
-        if (board[index] == 'O') classes.Add("O");
-        if (board[index] == 'X') classes.Add("X");
-        if (gameOver || !interactable) classes.Add("no-hover");
-        if (winningCells?.Contains(index) == true) classes.Add("winning");
+        if (state.board[index] != '\0') classes.Add("occupied");
+        if (state.board[index] == 'O') classes.Add("O");
+        if (state.board[index] == 'X') classes.Add("X");
+        if (state.gameOver || !state.interactable) classes.Add("no-hover");
+        if (state.winningCells?.Contains(index) == true) classes.Add("winning");
         
         return string.Join(" ", classes);
     }

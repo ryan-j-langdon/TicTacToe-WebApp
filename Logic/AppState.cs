@@ -3,8 +3,9 @@
 // Contains logic for the state of the app.
 public class AppState
 {
+    // Event notification when state is changed.
     public event Action? OnViewChanged;
-    
+
     // What component should be visible on the screen?
     public enum View {
         ModeSelect,
@@ -23,19 +24,5 @@ public class AppState
             _currentView = value;
             OnViewChanged?.Invoke();
         }
-    }
-
-    // Whether the game is against another person or against AI
-    public enum Gamemode
-    {
-        Multiplayer,
-        AI_Opponent
-    }
-
-    public Gamemode currentGamemode { get; set; }
-
-    public void SetGamemode(Gamemode gm)
-    {
-        currentGamemode = gm;
     }
 }

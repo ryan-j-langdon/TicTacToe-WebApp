@@ -1,13 +1,14 @@
 ﻿@namespace TicTacToe.Components
 @using TicTacToe.Logic
 @inject AppState app
+@inject GameState state
 
 <PageTitle>Tic Tac Toe</PageTitle>
 
 <div class="container">
     <div id="buttons">
         <RestartButton OnClick="RestartGame" />
-        <MainMenuButton OnClick="OptionsMenu"/>    
+        <MainMenuButton OnClick="MainMenu"/>    
     </div>
     <GameBoard @ref="gameBoard"/>
 </div>
@@ -18,28 +19,12 @@
     
     void RestartGame()
     {
-        Console.WriteLine("Restart clicked!");
-        if (gameBoard == null)
-        {
-            Console.WriteLine("gameBoard is null!");
-        }
-        else
-        {
-            gameBoard.Restart();
-        }
+        state.Restart();
     }
     
-    void OptionsMenu()
+    void MainMenu()
     {
-        Console.WriteLine("Options button clicked!");
-        if (gameBoard == null)
-        {
-            Console.WriteLine("gameBoard is null!");
-        }
-        else
-        {
-            app.currentView = AppState.View.ModeSelect;
-            InvokeAsync(StateHasChanged);
-        }
+        app.currentView = AppState.View.ModeSelect;
+        state.Restart();
     }
 }
