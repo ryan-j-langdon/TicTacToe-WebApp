@@ -13,21 +13,3 @@
     justify-content: center;
     align-items: center;
 }
-
-::deep(#backButton) {
-    padding: 2px 15px;
-    font-size: 30px;
-    color: var(--button-text-color);
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 10px;
-    transition: 200ms transform;
-    margin-bottom: 20px;
-    user-select: none;
-    white-space: nowrap;
-}
-
-#backButton {
-    margin-top: 20px;
-    background-color: grey;
-}

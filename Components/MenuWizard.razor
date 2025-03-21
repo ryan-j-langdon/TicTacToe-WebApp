@@ -21,8 +21,8 @@
         <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</Button>
         <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</Button>
         <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</Button>
-        <Button id="backButton" OnClick="() => app.currentView = AppState.View.ModeSelect">Back</Button>
-        <button id="backButton" @onclick="() => app.currentView = AppState.View.ModeSelect">Back</button>
+        <Button style="background-color: grey; margin-top: 20px;"
+            OnClick="() => app.currentView = AppState.View.ModeSelect">Back</Button>
     </div>
 }
 
@@ -38,7 +38,7 @@
     {
         app.OnViewChanged += StateHasChanged;
     }
-    
+
     private void MultiplayerButton()
     {
         app.currentView = AppState.View.GameBoard;
