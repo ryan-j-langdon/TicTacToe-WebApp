@@ -8,9 +8,12 @@ button {
     transition: 200ms transform;
     margin-bottom: 20px;
     user-select: none;
+    white-space: nowrap;
 }
 
-button:hover {
-    cursor: pointer;
-    transform: translateY(-2px);
+@media (pointer: fine) {
+    button:hover {
+        cursor: pointer;
+        transform: translateY(-2px);
+    }   
 }

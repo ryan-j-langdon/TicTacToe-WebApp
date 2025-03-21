@@ -9,8 +9,8 @@
 {
     <h2 class="heading">Select Game Mode</h2>
     <div class="container">
-        <button id="multiplayerButton" @onclick="MultiplayerButton">Multiplayer</button>
-        <button id="versusAIButton" @onclick="VersusAIButton">Versus AI</button>
+        <Button id="multiplayerButton" OnClick="MultiplayerButton">Multiplayer</Button>
+        <Button id="versusAIButton" OnClick="VersusAIButton">Versus AI</Button>
     </div>
 }
 
@@ -18,12 +18,10 @@
 {
     <h2 class="heading">Select Difficulty</h2>
     <div class="container">
-        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</button>
-        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</button>
-        <button @onclick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</button>
-        <!-- TODO not implemented -->
-        @* <h3 id="comingSoon">(More difficulties <br> coming soon!)</h3> *@
-        
+        <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Easy)">Easy</Button>
+        <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Medium)">Medium</Button>
+        <Button OnClick="() => SetDifficulty(Opponent.Difficulty.Impossible)">Impossible</Button>
+        <Button id="backButton" OnClick="() => app.currentView = AppState.View.ModeSelect">Back</Button>
         <button id="backButton" @onclick="() => app.currentView = AppState.View.ModeSelect">Back</button>
     </div>
 }

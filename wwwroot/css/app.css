@@ -18,19 +18,16 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url(fonts/Roboto-VariableFont_wdth,wgth.ttf)
+    src: url(/assets/fonts/Roboto-VariableFont_wdth,wght.ttf)
 }
 
 @font-face {
     font-family: 'Noto Sans';
-    src: url(fonts/NotoSans-VariableFont_wdth,wght.ttf)
+    src: url(/assets/fonts/NotoSans-VariableFont_wdth,wght.ttf)
 }
 
 html, body {
-    /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; */
-    /* font-family: 'Helvetica Neue'; */
-    /* font-family: 'Roboto'; */
-    font-family: 'Noto Sans', 'Roboto';
+    font-family: 'Roboto', 'Noto Sans';
     background-color: #1e1e1e;
 }
 

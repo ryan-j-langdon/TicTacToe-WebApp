@@ -1,10 +1,4 @@
-﻿/* TODO remove*/
-#comingSoon {
-    color: var(--text-color);
-    text-align: center;
-}
-
-.heading {
+﻿.heading {
     font-size: 40px;
     font-weight: 500;
     color: var(--text-color);
@@ -20,7 +14,7 @@
     align-items: center;
 }
 
-button {
+::deep(#backButton) {
     padding: 2px 15px;
     font-size: 30px;
     color: var(--button-text-color);
@@ -30,11 +24,7 @@ button {
     transition: 200ms transform;
     margin-bottom: 20px;
     user-select: none;
-}
-
-button:hover {
-    cursor: pointer;
-    transform: translateY(-2px);
+    white-space: nowrap;
 }
 
 #backButton {

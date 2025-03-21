@@ -7,16 +7,14 @@
 
 <div class="container">
     <div id="buttons">
-        <RestartButton OnClick="RestartGame" />
-        <MainMenuButton OnClick="MainMenu"/>    
+        <Button OnClick="RestartGame">Restart</Button>
+        <Button OnClick="MainMenu">Main Menu</Button>    
     </div>
-    <GameBoard @ref="gameBoard"/>
+    <GameBoard />
 </div>
 
 @code
 {
-    private GameBoard? gameBoard;
-    
     void RestartGame()
     {
         state.Restart();
