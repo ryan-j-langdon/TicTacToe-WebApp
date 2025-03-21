@@ -2,19 +2,66 @@
 @using TicTacToe.Logic
 @inject AppState app
 @inject GameState state
+@inject Opponent opp
 
 <h2 id="gameState">
-    @if (state.tie)
+    @* Game against AI*@
+    @if (state.currentGamemode == GameState.Gamemode.AI_Opponent)
     {
-        <span>The game is a tie!</span>
+        @* Game is a tie *@
+        @if (state.tie)
+        {
+            <span>The game is a tie!</span>
+        }
+        @* Game has ended *@
+        else if (state.winner != '\0')
+        {
+            if (state.winner == state.humanPlayer)
+            {
+                <span>You won! (<span class="@state.humanPlayer">@state.currentPlayer</span>)</span>
+                @* <span><span class="@state.humanPlayer">You</span> won!</span> *@
+            }
+            else
+            {
+                @* <span>AI (</span class="@() => opp.OtherPlayer('X')">@state.currentPlayer</span>) Won!</span> *@
+                <span>AI won! (<span class="@opp.OtherPlayer(state.humanPlayer)">@opp.OtherPlayer(state.humanPlayer)</span>)
+                </span>
+            }
+        }
+        @* Game is ongoing*@
+        else
+        {
+            if (state.currentPlayer == state.humanPlayer)
+            {
+                <span>Your turn (<span class="@state.currentPlayer">@state.currentPlayer</span>):</span>
+            }
+            else
+            {
+                <span>AI (<span class="@state.currentPlayer">@state.currentPlayer</span>) is thinking...</span>
+            }
+        }
+
+        <h3 id="difficulty">@opp.currentDifficulty AI</h3>
     }
-    else if (state.winner != '\0')
-    {
-        <span><span class="@state.winner">@state.winner</span> has won!</span>
-    }
+
+    @* Game against human*@
     else
     {
-        <span>It is <span class="@state.currentPlayer">@state.currentPlayer</span>'s turn:</span>
+        @* Game is a tie *@
+        @if (state.tie)
+        {
+            <span>The game is a tie!</span>
+        }
+        @* Game has ended *@
+        else if (state.winner != '\0')
+        {
+            <span><span class="@state.winner">@state.winner</span> has won!</span>
+        }
+        @* Game is ongoing*@
+        else
+        {
+            <span>It is <span class="@state.currentPlayer">@state.currentPlayer</span>'s turn:</span>
+        }
     }
 </h2>
 
@@ -31,6 +78,7 @@
     }
 </div>
 
+
 @code
 {
     // Rerender if the game state is changed from elsewhere
@@ -38,7 +86,7 @@
     {
         state.OnBoardChanged += StateHasChanged;
     }
-    
+
     // Adds tags to a cells class to control visual logic
     string GetCellClass(int index)
     {
@@ -49,7 +97,7 @@
         if (state.board[index] == 'X') classes.Add("X");
         if (state.gameOver || !state.interactable) classes.Add("no-hover");
         if (state.winningCells?.Contains(index) == true) classes.Add("winning");
-        
+
         return string.Join(" ", classes);
     }
 }

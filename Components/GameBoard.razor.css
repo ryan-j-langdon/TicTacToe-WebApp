@@ -8,9 +8,15 @@
     font-size: max(30px, min(5vh, 5vw));
     color: var(--text-color);
     margin-bottom: 20px;
+    text-align: center;
+    /* TODO remove */
     /* animation: flip 1s ease-in-out; */
     /* transform-style: preserve-3d; */
     /* transform: rotateY(180deg); */
+}
+
+#difficulty {
+    color: var(--subtle-text-color);
 }
 
 #gameBoard {
@@ -22,7 +28,7 @@
     
     width: 100%;
     max-width: 60vmin;
-    min-width: 300px;
+    min-width: 325px;
 }
 
 .O {

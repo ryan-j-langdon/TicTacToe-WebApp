@@ -27,16 +27,16 @@ public partial class Opponent
     }
 
     // Returns the index the opponent wants to play on
-    public int PlayMove(char[] board)
+    public int PlayMove(char[] board, char currentPlayer)
     {
         switch (currentDifficulty)
         {
             case Difficulty.Easy:
                 return PlayEasyMove(board);
             case Difficulty.Medium:
-                return PlayMediumMove(board);
+                return PlayMediumMove(board, currentPlayer);
             case Difficulty.Impossible:
-                return PlayImpossibleMove(board);
+                return PlayImpossibleMove(board, currentPlayer);
             default:
                 throw new InvalidOperationException("Invalid difficulty level!");
         }
@@ -58,7 +58,7 @@ public partial class Opponent
     }
     
     // Always blocks wins and claims victory when possible, but otherwise random
-    private int PlayMediumMove(char[] board)
+    private int PlayMediumMove(char[] board, char currentPlayer)
     {
         int? winningMove = null;
         int? blockingMove = null;
@@ -72,7 +72,7 @@ public partial class Opponent
             // Rightmost cell open
             if (board[rowStart] != '\0' && board[rowStart] == board[rowStart + 1] && board[rowStart + 2] == '\0')
             {
-                if (board[rowStart] == 'O')
+                if (board[rowStart] == currentPlayer)
                 {
                     winningMove = rowStart + 2;
                 }
@@ -84,7 +84,7 @@ public partial class Opponent
             // Middle cell open
             if (board[rowStart] != '\0' && board[rowStart] == board[rowStart + 2] && board[rowStart + 1] == '\0')
             {
-                if (board[rowStart] == 'O')
+                if (board[rowStart] == currentPlayer)
                 {
                     winningMove = rowStart + 1;
                 }
@@ -96,7 +96,7 @@ public partial class Opponent
             // Leftmost cell open
             if (board[rowStart + 1] != '\0' && board[rowStart + 1] == board[rowStart + 2] && board[rowStart] == '\0')
             {
-                if (board[rowStart + 1] == 'O')
+                if (board[rowStart + 1] == currentPlayer)
                 {
                     winningMove = rowStart;
                 }
@@ -113,7 +113,7 @@ public partial class Opponent
             // Bottom cell open
             if (board[i] != '\0' && board[i] == board[i + 3] && board[i + 6] == '\0')
             {
-                if (board[i] == 'O')
+                if (board[i] == currentPlayer)
                 {
                     winningMove = i + 6;
                 }
@@ -125,7 +125,7 @@ public partial class Opponent
             // Middle cell open
             if (board[i] != '\0' && board[i] == board[i + 6] && board[i + 3] == '\0')
             {
-                if (board[i] == 'O')
+                if (board[i] == currentPlayer)
                 {
                     winningMove = i + 3;
                 }
@@ -137,7 +137,7 @@ public partial class Opponent
             // Top cell open
             if (board[i + 3] != '\0' && board[i + 3] == board[i + 6] && board[i] == '\0')
             {
-                if (board[i + 3] == 'O')
+                if (board[i + 3] == currentPlayer)
                 {
                     winningMove = i;
                 }
@@ -153,7 +153,7 @@ public partial class Opponent
         // Bottom right is open
         if (board[0] != '\0' && board[0] == board[4] && board[8] == '\0')
         {
-            if (board[0] == 'O')
+            if (board[0] == currentPlayer)
             {
                 winningMove = 8;
             }
@@ -165,7 +165,7 @@ public partial class Opponent
         // Center is open
         if (board[0] != '\0' && board[0] == board[8] && board[4] == '\0')
         {
-            if (board[0] == 'O')
+            if (board[0] == currentPlayer)
             {
                 winningMove = 4;
             }
@@ -177,7 +177,7 @@ public partial class Opponent
         // Top left is open
         if (board[4] != '\0' && board[4] == board[8] && board[0] == '\0')
         {
-            if (board[4] == 'O')
+            if (board[4] == currentPlayer)
             {
                 winningMove = 0;
             }
@@ -190,7 +190,7 @@ public partial class Opponent
         // Bottom left is open
         if (board[2] != '\0' && board[2] == board[4] && board[6] == '\0')
         {
-            if (board[2] == 'O')
+            if (board[2] == currentPlayer)
             {
                 winningMove = 6;
             }
@@ -202,7 +202,7 @@ public partial class Opponent
         // Center is open
         if (board[2] != '\0' && board[2] == board[6] && board[4] == '\0')
         {
-            if (board[2] == 'O')
+            if (board[2] == currentPlayer)
             {
                 winningMove = 4;
             }
@@ -214,7 +214,7 @@ public partial class Opponent
         // Top right is open
         if (board[4] != '\0' && board[4] == board[6] && board[2] == '\0')
         {
-            if (board[4] == 'O')
+            if (board[4] == currentPlayer)
             {
                 winningMove = 2;
             }
@@ -244,26 +244,26 @@ public partial class Opponent
         
     }
     
-    // TODO Plays optimally, impossible to beat
-    private int PlayImpossibleMove(char[] board)
+    // Plays optimally, impossible to beat
+    private int PlayImpossibleMove(char[] board, char currentPlayer)
     {
         // Console.WriteLine("Playing impossible move!");
-        Choice bestMove = Minimax(board, true, 'O', 0, -1);
-        return bestMove.move;
+        Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
+        return bestChoice.move;
     }
     
     // Minimax algorithm tries all possible gamestates and picks the optimal move
     // Wins are weighted positive, with earlier wins being weighted higher
     // Loses are weighted negative, with earlier loses being rated lower
     // Ties are weighted at 0
-    private Choice Minimax(char[] gameState, bool maximize, char currentPlayer, int depth, int lastMove)
+    private Choice Minimax(char[] gameState, char AIPlayer, char currentPlayer, int depth, int lastMove)
     {
-        // Base cases is when the game is over
+        // Base cases is when the simulated game is over
         
         WinResult result = rules.CheckWinner(gameState);
         if (result.hasWinner)
         {
-            if (result.winnerChar == 'O')
+            if (result.winnerChar == AIPlayer)
             {
                 // Console.WriteLine($"Found winning board with depth {depth} and weight {10 - depth}.");
                 return new Choice(lastMove, 10 - depth, depth);
@@ -280,7 +280,7 @@ public partial class Opponent
             return new Choice(lastMove, 0, depth);
         }
         
-        // Recursive case when there are moves to analyze
+        // Recursive case when there are still moves to analyze
         
         int maxWeight = -100;
         int maxPlay = -1;
@@ -292,7 +292,7 @@ public partial class Opponent
         {
             char[] newGameState = (char[])gameState.Clone();
             newGameState[move] = currentPlayer;
-            Choice choice = Minimax(newGameState, !maximize, OtherPlayer(currentPlayer), depth+1, move);
+            Choice choice = Minimax(newGameState, AIPlayer, OtherPlayer(currentPlayer), depth+1, move);
             if (choice.weight > maxWeight)
             {
                 maxWeight = choice.weight;
@@ -305,10 +305,12 @@ public partial class Opponent
             }
         }
         
-        if (maximize)
+        // If this is our turn we should maximize
+        if (AIPlayer == currentPlayer)
         {
             return new Choice(maxPlay, maxWeight, depth);
         }
+        // If it's the opponent's turn we assume they minimize
         else {
             return new Choice(minPlay, minWeight, depth);
         }
@@ -329,7 +331,7 @@ public partial class Opponent
     }
     
     // Returns the character of the other player
-    private char OtherPlayer(char currentPlayer)
+    public char OtherPlayer(char currentPlayer)
     {
         if (currentPlayer == 'X')
         {

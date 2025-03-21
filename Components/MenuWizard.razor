@@ -26,6 +26,18 @@
     </div>
 }
 
+@if (app.currentView == AppState.View.TurnOrderSelect)
+{
+    <h2 class="heading">Select Your Pieces</h2>
+    <div class="container">
+        <Button OnClick="() => SetPlayerPieces('X')">X (first)</Button>
+        <Button OnClick="() => SetPlayerPieces('O')">O (second)</Button>
+        <Button OnClick="() => SetPlayerPieces('\0')">Random</Button>
+        <Button style="background-color: grey; margin-top: 20px;"
+            OnClick="() => app.currentView = AppState.View.DifficultySelect">Back</Button>
+    </div>
+}
+
 @if (app.currentView == AppState.View.GameBoard)
 {
     <MainPage />
@@ -59,7 +71,30 @@
     private void SetDifficulty(Opponent.Difficulty diff)
     {
         opponent.currentDifficulty = diff;
+        app.currentView = AppState.View.TurnOrderSelect;
+    }
+    
+    private void SetPlayerPieces(char playerPieces)
+    {
+        if (playerPieces == '\0')
+        {
+            state.randomizePieces =  true;
+            Random random = new Random();
+            state.humanPlayer = random.Next(2) == 0 ? 'X' : 'O';
+        }
+        else
+        {
+            state.humanPlayer = playerPieces;
+        }
         app.currentView = AppState.View.GameBoard;
+        
+        @* Console.WriteLine($"Human pieces = {state.humanPlayer}"); *@
+        // AI should take a turn first if the human player goes second
+        if (state.currentGamemode == GameState.Gamemode.AI_Opponent && state.humanPlayer == 'O')
+        {
+            @* Console.WriteLine("AI taking first turn!"); *@
+            Task.Run(state.OpponentTurn);
+        }
     }
 
 }

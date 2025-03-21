@@ -10,6 +10,7 @@ public class AppState
     public enum View {
         ModeSelect,
         DifficultySelect,
+        TurnOrderSelect,
         GameBoard
     }
 

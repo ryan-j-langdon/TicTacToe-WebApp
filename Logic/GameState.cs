@@ -33,9 +33,15 @@ public class GameState
     // Indexes 0-2 are the first row, 3-5 second row, 6-8 third row
     // '\0' is an empty space and 'X' and 'Y' are occupied spaces
     public char[] board = new char[9];
-
-    // The current player's turn, X or Y. X plays first
+    
+    // Which pieces is the human playing in an AI game, X or O?
+    public char humanPlayer { get; set; } = '\0';
+    
+    // The current player's turn, X or O.
     public char currentPlayer { get; set; } = 'X';
+    
+    // Whether or not the first player should be randomized
+    public bool randomizePieces = false;
 
     // Should the player be able to interact with the board?
     public bool interactable = true;
@@ -46,11 +52,12 @@ public class GameState
     // Who is the winner? '\0' if n/a
     public char winner = '\0';
     
+    // Which cells caused the win?
+    public int[]? winningCells = null;
+    
     // Was the game a draw?
     public bool tie = false;
     
-    // Which cells caused the win?
-    public int[]? winningCells = null;
 
     // Whether the game is against another person or against AI
     public enum Gamemode
@@ -85,7 +92,7 @@ public class GameState
 
         board[cell_index] = currentPlayer;
         WinResult result = rules.CheckWinner(board);
-        Console.WriteLine($"hasWinner = {result.hasWinner}");
+        // Console.WriteLine($"hasWinner = {result.hasWinner}");
         if (result.hasWinner)
         {
             gameOver = true;
@@ -102,6 +109,7 @@ public class GameState
             SwitchTurns();
         }
         OnChange();
+        
         // If playing against AI, they take their turn
         if (!gameOver && currentGamemode == Gamemode.AI_Opponent)
         {
@@ -110,9 +118,10 @@ public class GameState
     }
 
     // Opponent AI takes their turn
-    private async Task OpponentTurn()
+    public async Task OpponentTurn()
     {
-        int move = opponent.PlayMove(board);
+        Console.WriteLine("AI taking turn!");
+        int move = opponent.PlayMove(board, currentPlayer);
         interactable = false;
         OnChange();
         await Task.Delay(500);
@@ -152,17 +161,44 @@ public class GameState
         OnChange();
     }
 
-    // Resets the state of the game
+    // Restarts the game
     public void Restart()
     {
         // Console.WriteLine($"Restart clicked!");
         Array.Clear(board);
         currentPlayer = 'X';
-        winner = '\0';
+        interactable = true;
         gameOver = false;
+        winner = '\0';
         winningCells = null;
         tie = false;
+        
+        if (randomizePieces)
+        {
+            Random random = new Random();
+            humanPlayer = random.Next(2) == 0 ? 'X' : 'O';
+        }
+        
+        if (humanPlayer == 'O')
+        {
+            Task.Run(OpponentTurn);
+        }
+        
+        OnChange();
+    }
+    
+    // Resets the state of the game board
+    public void Reset()
+    {
+        Array.Clear(board);
+        humanPlayer = '\0';
+        currentPlayer = 'X';
+        randomizePieces = false;
         interactable = true;
+        gameOver = false;
+        winner = '\0';
+        winningCells = null;
+        tie = false;
         OnChange();
     }
 }
