@@ -1,17 +1,15 @@
 #title {
     color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    font-size: clamp(30px, 8vw, 3rem);
+    font-size: clamp(32px, 8vw, 2.8rem);
 }
 
 #author {
     color: var(--subtle-text-color);
-    margin: 0;
-    padding: 0;
-    font-size: clamp(12px, 3vw, 1.2rem);
-    margin-top: clamp(-15px, -3vw, 0px);
     margin-left: 5px;
+    margin-top: -15px;
+    /* font-size: clamp(12px, 3vw, 1.2rem); */
+    /* margin-top: clamp(-15px, -3vw, 0px);
+    margin-left: 5px; */
 }
 
 .nowrap {
@@ -23,9 +21,8 @@
     padding-right: max(5px, .5vw);
     background-color: var(--top-header-color);
     border-bottom: 0.1vh solid black;
-    height: max(60px, 8vh);
+    height: max(70px, 8vh);
     display: flex;
-    align-items: center;
     justify-content: space-between;
 }
 
@@ -33,18 +30,19 @@
     text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+    flex-grow: 1;
     white-space: nowrap;
 }
 
 .right-side {
-    font-size: clamp(10px, 4vw, 2rem);
+    font-size: clamp(10px, 3.5vw, 1.5rem);
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-grow: 1;
     text-align: center;
     width: fit-content;
-    max-height: 10px;
     gap: 1.5vw;
 }
 

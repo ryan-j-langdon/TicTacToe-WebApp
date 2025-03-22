@@ -6,11 +6,11 @@
 <PageTitle>Tic Tac Toe</PageTitle>
 
 <div class="container">
-    <div id="buttons">
-        <Button OnClick="RestartGame">Restart</Button>
-        <Button OnClick="MainMenu">Main Menu</Button>    
-    </div>
     <GameBoard />
+    <div id="buttons">
+        <Button style="font-size: clamp(25px, 3vw, 2.5rem);" OnClick="RestartGame">Restart</Button>
+        <Button style="font-size: clamp(25px, 3vw, 2.5rem);" OnClick="MainMenu">Main Menu</Button>
+    </div>
 </div>
 
 @code

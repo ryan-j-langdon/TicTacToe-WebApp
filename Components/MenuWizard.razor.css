@@ -1,5 +1,5 @@
 ﻿.heading {
-    font-size: clamp(30px, 10vw, 4rem);
+    font-size: clamp(30px, 8vw, 4rem);
     font-weight: 500;
     color: var(--text-color);
     text-align: center;
