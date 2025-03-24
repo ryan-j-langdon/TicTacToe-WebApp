@@ -20,8 +20,7 @@
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private Stopwatch? stopwatch;
-    private int touchDuration = 0;
-    private const int MAX_TOUCH_DURATION = 500;
+    private const int MAX_TOUCH_DURATION = 1000;
 
     private void HandlePointerDown(PointerEventArgs args)
     {

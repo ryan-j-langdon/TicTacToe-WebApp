@@ -1,5 +1,7 @@
 @namespace TicTacToe.Components
 @using TicTacToe.Logic
+@using System.Diagnostics
+
 @inject AppState app
 @inject GameState state
 @inject Opponent opp
@@ -69,8 +71,10 @@
     @for (var i = 0; i < 9; i++)
     {
         int index = i;
-        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => state.PlayMove(index)"
-            @ontouchend="() => state.PlayMove(index)">
+        <div class="cell @GetCellClass(index)" id="@index"
+                @onpointerdown="(args) => HandlePointerDown(args, index)"
+                @ontouchstart="() => HandleTouchStart(index)"
+                @ontouchend="() => HandleTouchEnd(index)">
             @if (state.board[i] != '\0')
             {
                 @state.board[i]
@@ -82,6 +86,9 @@
 
 @code
 {
+    private Stopwatch? stopwatch;
+    private const int MAX_TOUCH_DURATION = 1000;
+    
     // Rerender if the game state is changed from elsewhere
     protected override void OnInitialized()
     {
@@ -100,5 +107,40 @@
         if (state.winningCells?.Contains(index) == true) classes.Add("winning");
 
         return string.Join(" ", classes);
+    }
+    
+    private void HandlePointerDown(PointerEventArgs args, int index)
+    {
+        if (args.PointerType == "mouse")
+        {
+            Console.WriteLine("PointerDown registered");
+            state.PlayMove(index);
+        }
+        else
+        {
+            Console.WriteLine("PointerDown Ignored");
+        }
+    }
+
+    private void HandleTouchStart(int index)
+    {
+        stopwatch = Stopwatch.StartNew();
+        Console.WriteLine("Touch started");
+    }
+
+    private void HandleTouchEnd(int index)
+    {
+        if (stopwatch == null)
+        {
+            return;
+        }
+
+        stopwatch.Stop();
+        Console.WriteLine("Touch ended");
+        Console.WriteLine($"Elapsed touch time: {stopwatch.ElapsedMilliseconds}ms");
+        if (stopwatch.ElapsedMilliseconds < MAX_TOUCH_DURATION)
+        {
+            state.PlayMove(index);
+        }
     }
 }
