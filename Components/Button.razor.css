@@ -1,6 +1,6 @@
 button {
     padding: 2px 15px;
-    font-size: clamp(2.5rem, 5vw, 3rem);
+    font-size: clamp(1.8rem, 6vw, 3rem);
     color: var(--button-text-color);
     background-color: var(--primary-color);
     border: none;
