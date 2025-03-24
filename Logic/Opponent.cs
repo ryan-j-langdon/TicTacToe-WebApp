@@ -278,6 +278,12 @@ public partial class Opponent
     // Plays optimally, impossible to beat
     private int PlayImpossibleMove(char[] board, char currentPlayer)
     {
+        // Spice up the first move a bit to keep it interesting
+        if (IsFirstMove(board))
+        {
+            return PlayEasyMove(board);
+        }
+
         // Console.WriteLine("Playing impossible move!");
         Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
         return bestChoice.move;
