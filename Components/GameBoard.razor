@@ -69,7 +69,8 @@
     @for (var i = 0; i < 9; i++)
     {
         int index = i;
-        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => state.PlayMove(index)">
+        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => state.PlayMove(index)"
+            @ontouchend="() => state.PlayMove(index)">
             @if (state.board[i] != '\0')
             {
                 @state.board[i]

@@ -82,7 +82,6 @@ public class GameState
     // Handles when a cell is clicked on
     public void PlayMove(int cell_index)
     {
-        // Console.WriteLine($"Cell {cell_index} clicked.");
         if (cell_index >= board.Length || cell_index < 0) return;
 
         if (gameOver || !interactable) return;
@@ -92,7 +91,6 @@ public class GameState
 
         board[cell_index] = currentPlayer;
         WinResult result = rules.CheckWinner(board);
-        // Console.WriteLine($"hasWinner = {result.hasWinner}");
         if (result.hasWinner)
         {
             gameOver = true;
@@ -120,7 +118,6 @@ public class GameState
     // Opponent AI takes their turn
     public async Task OpponentTurn()
     {
-        Console.WriteLine("AI taking turn!");
         int move = opponent.PlayMove(board, currentPlayer);
         interactable = false;
         OnChange();
@@ -157,14 +154,12 @@ public class GameState
         {
             currentPlayer = 'X';
         }
-        // Console.WriteLine($"It is now {currentPlayer}'s turn.");
         OnChange();
     }
 
     // Restarts the game
     public void Restart()
     {
-        // Console.WriteLine($"Restart clicked!");
         Array.Clear(board);
         currentPlayer = 'X';
         interactable = true;

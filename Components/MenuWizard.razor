@@ -89,11 +89,9 @@
         }
         app.currentView = AppState.View.GameBoard;
         
-        @* Console.WriteLine($"Human pieces = {state.humanPlayer}"); *@
         // AI should take a turn first if the human player goes second
         if (state.currentGamemode == GameState.Gamemode.AI_Opponent && state.humanPlayer == 'O')
         {
-            @* Console.WriteLine("AI taking first turn!"); *@
             Task.Run(state.OpponentTurn);
         }
     }
