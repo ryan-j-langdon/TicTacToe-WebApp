@@ -1,15 +1,60 @@
 @namespace TicTacToe.Components
+@using System.Diagnostics
 
-<button @attributes="AdditionalAttributes" @onclick="OnClick">@ChildContent</button>
+<button @attributes="AdditionalAttributes"
+        @onpointerdown="HandlePointerDown"
+        @ontouchstart="HandleTouchStart"
+        @ontouchend="HandleTouchEnd">
+    @ChildContent
+</button>
 
 @code
 {
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
-        
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    
+
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Stopwatch? stopwatch;
+    private int touchDuration = 0;
+    private const int MAX_TOUCH_DURATION = 500;
+
+    private void HandlePointerDown(PointerEventArgs args)
+    {
+        if (args.PointerType == "mouse")
+        {
+            Console.WriteLine("PointerDown registered");
+            OnClick.InvokeAsync();
+        }
+        else
+        {
+            Console.WriteLine("PointerDown Ignored");
+        }
+    }
+    
+    private void HandleTouchStart()
+    {
+        stopwatch = Stopwatch.StartNew();
+        Console.WriteLine("Touch started");
+    }
+
+    private void HandleTouchEnd()
+    {
+        if (stopwatch == null)
+        {
+            return;
+        }
+
+        stopwatch.Stop();
+        Console.WriteLine("Touch ended");
+        Console.WriteLine($"Elapsed touch time: {stopwatch.ElapsedMilliseconds}ms");
+        if (stopwatch.ElapsedMilliseconds < MAX_TOUCH_DURATION)
+        {
+            OnClick.InvokeAsync();
+        }
+    }
 }
