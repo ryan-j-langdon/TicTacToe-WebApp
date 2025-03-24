@@ -324,7 +324,10 @@ public partial class Opponent
         int minWeight = 100;
         int minPlay = -1;
         
-        List<int> legalMoves = GetLegalMoves(gameState);
+        int[] legalMoves = GetLegalMoves(gameState);
+        // Shuffle the legal moves to find different optimal moves each time
+        Random random = new Random();
+        random.Shuffle(legalMoves);
         foreach (int move in legalMoves)
         {
             char[] newGameState = (char[])gameState.Clone();
@@ -354,17 +357,18 @@ public partial class Opponent
     }
     
     // Returns a list of legal moves for a given game board
-    private List<int> GetLegalMoves(char[] board)
+    private int[] GetLegalMoves(char[] board)
     {
-        List<int> validMoves = new List<int>();
+        int[] validMoves = new int[board.Length];
+        int end = 0;
         for (int i = 0; i < board.Length; i++)
         {
             if (board[i] == '\0')
             {
-                validMoves.Add(i);
+                validMoves[end++] = i;
             }
         }
-        return validMoves;
+        return validMoves[..end];
     }
     
     // Returns the character of the other player
