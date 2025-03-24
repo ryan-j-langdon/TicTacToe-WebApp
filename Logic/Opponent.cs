@@ -284,7 +284,6 @@ public partial class Opponent
             return PlayEasyMove(board);
         }
 
-        // Console.WriteLine("Playing impossible move!");
         Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
         return bestChoice.move;
     }
@@ -302,12 +301,10 @@ public partial class Opponent
         {
             if (result.winnerChar == AIPlayer)
             {
-                // Console.WriteLine($"Found winning board with depth {depth} and weight {10 - depth}.");
                 return new Choice(lastMove, 10 - depth, depth);
             }
             else
             {
-                // Console.WriteLine($"Found losing board with depth {depth} and weight {-10 + depth}.");
                 return new Choice(lastMove, -10 + depth, depth);
             } 
         }
