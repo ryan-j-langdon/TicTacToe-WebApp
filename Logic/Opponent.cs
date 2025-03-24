@@ -15,16 +15,17 @@ public partial class Opponent
     {
         Easy,
         Medium,
+        Hard,
         Impossible
     }
 
     public Difficulty currentDifficulty { get; set; }
     
     // Event handler needs to set difficulty with a function call
-    public void SetDifficulty(Difficulty diff)
-    {
-        currentDifficulty = diff;
-    }
+    // public void SetDifficulty(Difficulty diff)
+    // {
+    //     currentDifficulty = diff;
+    // }
 
     // Returns the index the opponent wants to play on
     public int PlayMove(char[] board, char currentPlayer)
@@ -35,13 +36,15 @@ public partial class Opponent
                 return PlayEasyMove(board);
             case Difficulty.Medium:
                 return PlayMediumMove(board, currentPlayer);
+            case Difficulty.Hard:
+                return PlayHardMove(board, currentPlayer);
             case Difficulty.Impossible:
                 return PlayImpossibleMove(board, currentPlayer);
             default:
                 throw new InvalidOperationException("Invalid difficulty level!");
         }
     }
-    
+
     // Just selects a random tile to play on
     private int PlayEasyMove(char[] board)
     {
@@ -243,10 +246,37 @@ public partial class Opponent
         }
         
     }
-    
+
+    // Plays a mix of medium and impossible moves
+    private int PlayHardMove(char[] board, char currentPlayer)
+    {
+        if (IsFirstMove(board))
+        {
+            Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
+            return bestChoice.move;
+        }
+        
+        Random random = new Random();
+        int rand = random.Next(1,10);
+        
+        if (rand < 7)
+        {
+            return PlayMediumMove(board, currentPlayer);
+        }
+        else
+        {
+            return PlayHardMove(board, currentPlayer);
+        }
+    }
+
     // Plays optimally, impossible to beat
     private int PlayImpossibleMove(char[] board, char currentPlayer)
     {
+        if (IsFirstMove(board))
+        {
+            return PlayEasyMove(board);
+        }
+
         // Console.WriteLine("Playing impossible move!");
         Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
         return bestChoice.move;
@@ -341,6 +371,16 @@ public partial class Opponent
         {
             return 'X';
         }
+    }
+    
+    public bool IsFirstMove(char[] board)
+    {
+        foreach (char c in board)
+        {
+            if (c != '\0') return false;
+        }
+        
+        return true;
     }
 }
 
