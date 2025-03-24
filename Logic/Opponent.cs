@@ -252,6 +252,12 @@ public partial class Opponent
     {
         if (IsFirstMove(board))
         {
+            return PlayEasyMove(board);
+        }
+        
+        // Don't allow quick guaranteed wins when going second
+        if (IsSecondMove(board))
+        {
             Choice bestChoice = Minimax(board, currentPlayer, currentPlayer, 0, -1);
             return bestChoice.move;
         }
@@ -259,7 +265,7 @@ public partial class Opponent
         Random random = new Random();
         int rand = random.Next(1,10);
         
-        if (rand < 7)
+        if (rand < 5)
         {
             return PlayMediumMove(board, currentPlayer);
         }
@@ -272,6 +278,7 @@ public partial class Opponent
     // Plays optimally, impossible to beat
     private int PlayImpossibleMove(char[] board, char currentPlayer)
     {
+        // Spice up the first move a bit to keep it interesting
         if (IsFirstMove(board))
         {
             return PlayEasyMove(board);
@@ -373,6 +380,7 @@ public partial class Opponent
         }
     }
     
+    // True if it's the first move going first
     public bool IsFirstMove(char[] board)
     {
         foreach (char c in board)
@@ -381,6 +389,20 @@ public partial class Opponent
         }
         
         return true;
+    }
+
+    // True if it's the first move going second
+    public bool IsSecondMove(char[] board)
+    {
+        int count = 0;
+        foreach (char c in board)
+        {
+            if (c != '\0')
+            {
+                count += 1;
+            }
+        }
+        return count == 1;
     }
 }
 
