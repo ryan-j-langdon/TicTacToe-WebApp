@@ -1,5 +1,7 @@
 @namespace TicTacToe.Components
 @using TicTacToe.Logic
+@using System.Diagnostics
+
 @inject AppState app
 @inject GameState state
 @inject Opponent opp
@@ -19,13 +21,10 @@
             if (state.winner == state.humanPlayer)
             {
                 <span>You won! (<span class="@state.humanPlayer">@state.currentPlayer</span>)</span>
-                @* <span><span class="@state.humanPlayer">You</span> won!</span> *@
             }
             else
             {
-                @* <span>AI (</span class="@() => opp.OtherPlayer('X')">@state.currentPlayer</span>) Won!</span> *@
-                <span>AI won! (<span class="@opp.OtherPlayer(state.humanPlayer)">@opp.OtherPlayer(state.humanPlayer)</span>)
-                </span>
+                <span>AI won! (<span class="@opp.OtherPlayer(state.humanPlayer)">@opp.OtherPlayer(state.humanPlayer)</span>)</span>
             }
         }
         @* Game is ongoing*@
@@ -69,8 +68,9 @@
     @for (var i = 0; i < 9; i++)
     {
         int index = i;
-        <div class="cell @GetCellClass(index)" id="@index" @onclick="() => state.PlayMove(index)"
-            @ontouchend="() => state.PlayMove(index)">
+        <div class="cell @GetCellClass(index)" id="@index"
+                @onpointerdown="(args) => HandlePointerDown(args, index)"
+                @ontouchstart="() => HandleTouchStart(index)">
             @if (state.board[i] != '\0')
             {
                 @state.board[i]
@@ -100,5 +100,23 @@
         if (state.winningCells?.Contains(index) == true) classes.Add("winning");
 
         return string.Join(" ", classes);
+    }
+    
+    private void HandlePointerDown(PointerEventArgs args, int index)
+    {
+        if (args.PointerType == "mouse")
+        {
+            Console.WriteLine("PointerDown registered");
+            state.PlayMove(index);
+        }
+        else
+        {
+            Console.WriteLine("PointerDown Ignored");
+        }
+    }
+
+    private void HandleTouchStart(int index)
+    {
+        state.PlayMove(index);
     }
 }

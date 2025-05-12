@@ -1,15 +1,33 @@
 @namespace TicTacToe.Components
+@using System.Diagnostics
 
-<button @attributes="AdditionalAttributes" @onclick="OnClick">@ChildContent</button>
+<button @attributes="AdditionalAttributes"
+        @onpointerdown="HandlePointerDown"
+        @ontouchstart="HandleTouchStart">
+    @ChildContent
+</button>
 
 @code
 {
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
-        
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    
+
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private void HandlePointerDown(PointerEventArgs args)
+    {
+        if (args.PointerType == "mouse")
+        {
+            OnClick.InvokeAsync();
+        }
+    }
+    
+    private void HandleTouchStart()
+    {
+        OnClick.InvokeAsync();
+    }
 }
